@@ -1,2 +1,2 @@
 # csp-finalproj
-# This is my final project for CS Principles. 
+This is my final project for CS Principles. 
