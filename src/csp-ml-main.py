@@ -68,7 +68,8 @@ import time as t
 
 date = dt.datetime.fromtimestamp(t.time()).strftime('%Y-%m-%d-%H-%M-%S')
 #pkl_filename = date + "-hw_model.pkl"
-pkl_filename = "2019-03-27-14-10-46-hw_model.pkl"
+directory = "resources/"
+pkl_filename = directory + "2019-03-27-14-10-46-hw_model.pkl"
 
 def save():
     with open(pkl_filename, 'wb') as file:  
