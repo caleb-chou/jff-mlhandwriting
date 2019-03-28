@@ -35,9 +35,13 @@ from keras.models import Sequential
 from keras.layers import Dense, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers.advanced_activations import LeakyReLU
+from keras.preprocessing.image import img_to_array, load_img
+
+
+import matplotlib.pyplot as plt
 
 batch_size = 64
-epochs = 3
+epochs = 10
 num_classes = 10
 hw_model = None
 
@@ -88,12 +92,52 @@ def evaluate():
     test = hw_model.evaluate(test_X, test_Y_one_hot, verbose=1)
     print('Test loss:', test[0])
     print('Test accuracy:', test[1])
-
+    
+        
+def predict_image():
+    global directory,hw_model
+    img_test = load_img(directory + "temp.png")
+    img_test = img_to_array(img_test)
+    img_test = np.expand_dims(img_test,axis=1)
+    img_test = img_test.reshape(-1,28,28,1)
+    img_test.shape
+    img_test = img_test.astype('float32')
+    img_test = img_test/255
+    prediction = hw_model.predict(img_test)
+    print(prediction)
+    prediction = np.argmax(np.round(prediction),axis=0)
+    print(prediction)
+    print()
 #create()
 #train()
 #save()
 load()
-evaluate()
+#train()
+#save()
+#evaluate()
+predict_image()
+'''
+predicted_classes = hw_model.predict(test_X)
+predicted_classes = np.argmax(np.round(predicted_classes),axis=1)
+predicted_classes.shape, test_Y.shape
+
+print(predicted_classes)
 
 
 
+correct = np.where(predicted_classes==test_Y)[0]
+print ("Found %d correct labels" % len(correct))
+for i, correct in enumerate(correct[:9]):
+    plt.subplot(3,3,i+1)
+    plt.imshow(test_X[correct].reshape(28,28), cmap='gray', interpolation='none')
+    plt.title("Predicted {}, Class {}".format(predicted_classes[correct], test_Y[correct]))
+    plt.tight_layout()
+
+incorrect = np.where(predicted_classes!=test_Y)[0]
+print ("Found %d incorrect labels" % len(incorrect))
+for i, incorrect in enumerate(incorrect[:9]):
+    plt.subplot(3,3,i+1)
+    plt.imshow(test_X[incorrect].reshape(28,28), cmap='gray', interpolation='none')
+    plt.title("Predicted {}, Class {}".format(predicted_classes[incorrect], test_Y[incorrect]))
+    plt.tight_layout()
+'''
