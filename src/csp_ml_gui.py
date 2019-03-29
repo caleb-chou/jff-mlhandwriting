@@ -15,8 +15,10 @@ draw = ImageDraw.Draw(image)
 canvas_width = 280
 canvas_height = 280
 
+pred = None
+
 def paint( event ):
-   color = "#FFFFFF"
+   color = "#000000"
    x1, y1 = ( event.x ), ( event.y )
    x2, y2 = ( event.x + 25 ), ( event.y )
    w.create_line( x1, y1, x2, y2, fill = color, width = 25)
@@ -25,6 +27,7 @@ def clear():
     w.delete('all')
     global draw
     draw.rectangle((0,0,280,280), fill =(0,0,0,0))
+    set_text("")
 def save():
     w.update()
     #os.remove(os.path.abspath(os.path.pardir) + '/resources/temp.png')
@@ -32,12 +35,18 @@ def save():
 model = Recognizer("defaultmodel.pkl")
 model.load()
 def predict():
-    global model
+    global model, pred, message
     prediction = model.predict_image_from_path()
+    set_text(prediction)
     print(prediction)
 def make_prediction():
     save()
     predict()
+    
+def set_text(value):
+    global message
+    message.delete(1.0, END)
+    message.insert(END, value)
 master = Tk()
 master.title( "Draw a Number" )
 w = Canvas(master, 
@@ -50,7 +59,8 @@ save_button = Button(master, text = "Predict", command = make_prediction)
 save_button.pack (side = RIGHT)
 clear_button = Button(master, text = "Clear", command = clear)
 clear_button.pack(side = LEFT)
-#message = Label( master, text = "Press and Drag the mouse to draw" )
-#message.pack( side = BOTTOM )
+message = Text( master, height = 1, width = 15 )
+message.pack( side = BOTTOM )
+
     
 mainloop()
