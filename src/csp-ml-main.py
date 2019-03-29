@@ -35,10 +35,6 @@ from keras.models import Sequential
 from keras.layers import Dense, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers.advanced_activations import LeakyReLU
-from keras.preprocessing.image import img_to_array, load_img
-
-
-import matplotlib.pyplot as plt
 
 batch_size = 64
 epochs = 10
@@ -93,21 +89,16 @@ def evaluate():
     print('Test loss:', test[0])
     print('Test accuracy:', test[1])
     
-        
+from PIL import Image
 def predict_image():
-    global directory,hw_model
-    img_test = load_img(directory + "temp.png")
-    img_test = img_to_array(img_test)
-    img_test = np.expand_dims(img_test,axis=1)
-    img_test = img_test.reshape(-1,28,28,1)
-    img_test.shape
-    img_test = img_test.astype('float32')
-    img_test = img_test/255
-    prediction = hw_model.predict(img_test)
+    global directory
+    global hw_model
+    img = Image.open(directory + 'temp.png').convert('L')
+    img = np.resize (img, (28,28,1))
+    im2arr = np.array(img)
+    im2arr = im2arr.reshape(-1,28,28,1)
+    prediction = hw_model.predict_classes(im2arr)
     print(prediction)
-    prediction = np.argmax(np.round(prediction),axis=0)
-    print(prediction)
-    print()
 #create()
 #train()
 #save()
