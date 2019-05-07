@@ -30,7 +30,7 @@ def clear():
     set_text("")
 def save():
     w.update()
-    #os.remove(os.path.abspath(os.path.pardir) + '/resources/temp.png')
+    os.remove(os.path.abspath(os.path.pardir) + '/resources/temp.png')
     image.convert('LA').resize((28,28),Image.ANTIALIAS).save(os.path.abspath(os.path.pardir) + '/resources/temp.png')
 model = Recognizer("defaultmodel.pkl")
 model.load()
@@ -38,7 +38,7 @@ def predict():
     global model, pred, message
     prediction = model.predict_image_from_path()
     set_text(prediction)
-    print(prediction)
+    #print(prediction)
 def make_prediction():
     save()
     predict()
@@ -52,6 +52,7 @@ master.title( "Draw a Number" )
 w = Canvas(master, 
            width=canvas_width, 
            height=canvas_height)
+
 w.pack(expand = YES, fill = BOTH)
 w.bind( "<B1-Motion>", paint )
 w.bind( '<Button-3>', clear)
@@ -62,5 +63,4 @@ clear_button.pack(side = LEFT)
 message = Text( master, height = 1, width = 15 )
 message.pack( side = BOTTOM )
 
-    
 mainloop()

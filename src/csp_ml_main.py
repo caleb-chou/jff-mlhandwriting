@@ -18,6 +18,7 @@ import pickle
 import datetime as dt
 import time as t
 import os.path
+
     
 class Recognizer:
     date = dt.datetime.fromtimestamp(t.time()).strftime('%Y-%m-%d-%H-%M-%S')
@@ -70,9 +71,9 @@ class Recognizer:
         self.hw_model.add(LeakyReLU(alpha=0.1))                  
         self.hw_model.add(Dense(self.num_classes, activation='softmax'))
     
-    def train(self):    
+    def train(self,my_epochs=epochs):    
         self.hw_model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(),metrics=['accuracy'])
-        self.hw_model.fit(self.train_X, self.train_label, batch_size=self.batch_size,epochs=self.epochs,verbose=1,validation_data=(self.valid_X, self.valid_label))
+        self.hw_model.fit(self.train_X, self.train_label, batch_size=self.batch_size,epochs=my_epochs,verbose=1,validation_data=(self.valid_X, self.valid_label))
     
     def save(self):
         with open(self.pkl_filename, 'wb') as file:  
@@ -103,9 +104,21 @@ class Recognizer:
         image = image.reshape(-1,28,28,1)
         prediction = self.hw_model.predict_classes(image)
         return prediction[0]
+    
+    def getWidth(self):
+        return 28
+    def getHeight(self):
+        return 28
 
-#m = Recognizer()
-#m.load()
-#m.train()
-#m.save()
-#m.evaluate()
+    def doEverything(self, choice = "train"):
+        self.load()
+        if(choice == "train"):
+            self.train()
+            self.save()
+        if(choice == "predict"):
+            self.predict_image()
+    
+
+class RNN:
+    def __init__():
+        print()
