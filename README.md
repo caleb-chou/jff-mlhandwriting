@@ -1,2 +1,2 @@
 # csp-finalproj
-This is my final project for CS Principles. 
+Handwriting recognition, uses machine learning.
